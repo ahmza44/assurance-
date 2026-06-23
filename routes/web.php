@@ -51,6 +51,12 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::post('/establishments', [EstablishmentController::class, 'store'])
         ->name('establishments.store');
 
+    Route::get('/establishments/{id}/edit', [EstablishmentController::class, 'edit'])
+        ->name('establishments.edit');
+
+    Route::put('/establishments/{id}', [EstablishmentController::class, 'update'])
+        ->name('establishments.update');
+
     Route::delete('/establishments/{id}', [EstablishmentController::class, 'destroy'])
         ->name('establishments.destroy');
 });

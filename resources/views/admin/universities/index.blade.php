@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Établissements</title>
+    <title>Universités</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
@@ -31,9 +31,8 @@
 
         <nav class="nav nav-pills flex-column gap-2">
             <a class="nav-link" href="{{ route('admin.index') }}"><i class="fa-solid fa-tachometer-alt me-2"></i>Dashboard</a>
-            <a class="nav-link" href="{{ route('admin.universities.index') }}"><i class="fa-solid fa-university me-2"></i>Universités</a>
-            <a class="nav-link active" href="{{ route('admin.establishments.index') }}"><i class="fa-solid fa-graduation-cap me-2"></i>Établissements</a>
-         
+            <a class="nav-link active" href="{{ route('admin.universities.index') }}"><i class="fa-solid fa-university me-2"></i>Universités</a>
+            <a class="nav-link" href="{{ route('admin.establishments.index') }}"><i class="fa-solid fa-graduation-cap me-2"></i>Établissements</a>
             <a class="nav-link" href="#"><i class="fa-solid fa-sign-out-alt me-2"></i>Déconnexion</a>
         </nav>
     </aside>
@@ -43,13 +42,16 @@
             @if (session('success'))
                 <div class="alert alert-success shadow-sm">{{ session('success') }}</div>
             @endif
+            @if (session('error'))
+                <div class="alert alert-danger shadow-sm">{{ session('error') }}</div>
+            @endif
 
             <div class="mb-4 pb-2 page-header">
-                <h2 class="fw-semibold">Établissements</h2>
+                <h2 class="fw-semibold">Universités</h2>
             </div>
 
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <a href="{{ route('admin.establishments.create') }}" class="btn btn-primary"><i class="fa-solid fa-plus me-2"></i>Ajouter</a>
+                <a href="{{ route('admin.universities.create') }}" class="btn btn-primary"><i class="fa-solid fa-plus me-2"></i>Ajouter</a>
             </div>
 
             <div class="card table-card shadow-sm">
@@ -60,29 +62,28 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Nom</th>
-                                    <th>Université Parente</th>
+                                    <th>Nombre d'Établissements</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($establishments as $establishment)
+                                @forelse ($universities as $university)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $establishment->name }}</td>
-                                        <td>{{ $establishment->university?->name ?? '—' }}</td>
+                                        <td>{{ $university->name }}</td>
+                                        <td>{{ $university->establishments_count }}</td>
                                         <td>
-                                                    <a href="{{ route('admin.establishments.edit', $establishment->id) }}" class="btn btn-sm btn-outline-primary me-2"><i class="fa-solid fa-edit"></i></a>
-                                           
-                                            <form action="{{ route('admin.establishments.destroy', $establishment) }}" method="POST" class="d-inline">
+                                            <a href="{{ route('admin.universities.edit', $university) }}" class="btn btn-sm btn-outline-primary me-2"><i class="fa-solid fa-edit"></i></a>
+                                            <form action="{{ route('admin.universities.destroy', $university) }}" method="POST" class="d-inline">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Supprimer cet établissement ?')"><i class="fa-solid fa-trash"></i></button>
+                                                <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Supprimer cette université ?')"><i class="fa-solid fa-trash"></i></button>
                                             </form>
                                         </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="4" class="text-center text-muted py-4">Aucun établissement pour le moment</td>
+                                        <td colspan="4" class="text-center text-muted py-4">Aucune université pour le moment</td>
                                     </tr>
                                 @endforelse
                             </tbody>
