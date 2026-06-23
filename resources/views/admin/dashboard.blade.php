@@ -12,7 +12,7 @@
             min-height: 100vh;
         }
         .sidebar {
-            background: #0a1128;
+            background: #0A1E5C;
             min-height: 100vh;
             width: 260px;
         }
@@ -73,11 +73,14 @@
         </div>
 
         <nav class="nav nav-pills flex-column gap-2">
-            <a class="nav-link active" href="#">
+            <a class="nav-link active" href="{{ route('admin.index') }}">
                 <i class="fa-solid fa-tachometer-alt me-2"></i>Dashboard
             </a>
-            <a class="nav-link" href="#">
-                <i class="fa-solid fa-users me-2"></i>Utilisateurs
+            <a class="nav-link" href="{{ route('admin.universities.index') }}">
+                <i class="fa-solid fa-university me-2"></i>Universités
+            </a>
+            <a class="nav-link" href="{{ route('admin.establishments.index') }}">
+                <i class="fa-solid fa-graduation-cap me-2"></i>Établissements
             </a>
             <a class="nav-link" href="#">
                 <i class="fa-solid fa-sign-out-alt me-2"></i>Déconnexion
@@ -153,7 +156,6 @@
                                     <th>Année scolaire</th>
                                     <th>Niveau</th>
                                     <th>CIN (fichier)</th>
-                                    <th>Statut</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -175,19 +177,10 @@
                                                 <span class="text-muted">—</span>
                                             @endif
                                         </td>
-                                        <td>
-                                            @if ($student->status === 'valide')
-                                                <span class="badge bg-success status-badge">Validé</span>
-                                            @elseif ($student->status === 'refuse')
-                                                <span class="badge bg-danger status-badge">Refusé</span>
-                                            @else
-                                                <span class="badge bg-warning text-dark status-badge">En attente</span>
-                                            @endif
-                                        </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="11" class="text-center text-muted py-4">Aucune souscription pour le moment</td>
+                                        <td colspan="10" class="text-center text-muted py-4">Aucune souscription pour le moment</td>
                                     </tr>
                                 @endforelse
                             </tbody>
