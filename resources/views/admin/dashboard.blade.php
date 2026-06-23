@@ -82,9 +82,14 @@
             <a class="nav-link" href="{{ route('admin.establishments.index') }}">
                 <i class="fa-solid fa-graduation-cap me-2"></i>Établissements
             </a>
-            <a class="nav-link" href="#">
-                <i class="fa-solid fa-sign-out-alt me-2"></i>Déconnexion
-            </a>
+         <a class="nav-link" href="{{ route('logout') }}" 
+   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+    <i class="fa-solid fa-sign-out-alt me-2"></i>Déconnexion
+</a>
+
+<form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+    @csrf
+</form>
         </nav>
     </aside>
 
