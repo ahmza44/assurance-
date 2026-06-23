@@ -9,5 +9,6 @@ Route::get('/', [SouscriptionController::class, 'index']);
 Route::post('/store', [SouscriptionController::class, 'store']);
 Route::post('/souscription', [SouscriptionController::class, 'store'])->name('souscription.store');
 Route::get('/admin', [AdminController::class, 'index']);
-Route::post('/admin/valider/{id}', [AdminController::class, 'valider']);
-Route::post('/admin/refuser/{id}', [AdminController::class, 'refuser']);
+Route::post('/admin/valider/{id}', [AdminController::class, 'valider'])->name('admin.valider');
+Route::post('/admin/refuser/{id}', [AdminController::class, 'refuser'])->name('admin.refuser');
+
