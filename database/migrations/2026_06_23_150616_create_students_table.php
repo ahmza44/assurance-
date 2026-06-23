@@ -10,18 +10,29 @@ return new class extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->id();
-            $table->string('universite')->default('ENCG');
-            $table->string('etablissement');
+
+            $table->foreignId('university_id')
+                ->constrained()
+                ->onDelete('cascade');
+
+            $table->foreignId('establishment_id')
+                ->constrained()
+                ->onDelete('cascade');
+
             $table->string('nom');
             $table->string('prenom');
             $table->string('telephone');
             $table->string('cin')->unique();
             $table->string('email')->unique();
+
             $table->string('annee_scolaire');
             $table->string('niveau_scolaire');
+
             $table->string('cin_recto_verso')->nullable();
+
             $table->enum('status', ['en_attente', 'valide', 'refuse'])
-                  ->default('en_attente');
+                ->default('en_attente');
+
             $table->timestamps();
         });
     }

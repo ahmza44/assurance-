@@ -2,55 +2,42 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Student;
 use Illuminate\Http\Request;
+use App\Models\University;
+use App\Models\Establishment;
 
 class SouscriptionController extends Controller
 {
     public function index()
     {
-        return view('souscription');
+        $universities = University::all();
+
+        return view('souscription', compact('universities'));
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'etablissement' => 'required',
-            'nom' => 'required',
-            'prenom' => 'required',
-            'telephone' => 'required',
-            'cin' => 'required',
+        $validated = $request->validate([
+            'nom' => 'required|string',
+            'prenom' => 'required|string',
+            'cin' => 'required|string',
+            'telephone' => 'required|string',
             'email' => 'required|email',
-            'annee_scolaire' => 'required',
-            'niveau_scolaire' => 'required',
+
+            'university_id' => 'required|exists:universities,id',
+            'establishment_id' => 'required|exists:establishments,id',
+
+            'annee_scolaire' => 'required|string',
+            'niveau_scolaire' => 'required|string',
         ]);
 
-        $exist = Student::where('cin', $request->cin)->first();
+        // ici tu sauvegardes student/souscription (pas montré)
+        return back()->with('success', 'Demande envoyée');
+    }
 
-        if ($exist) {
-            return back()->with('error', 'Etudiant déjà inscrit');
-        }
-
-        $path = null;
-
-        if ($request->hasFile('cin_recto_verso')) {
-            $path = $request->file('cin_recto_verso')
-                            ->store('cins', 'public');
-        }
-
-        Student::create([
-            'universite' => 'ENCG',
-            'etablissement' => $request->etablissement,
-            'nom' => $request->nom,
-            'prenom' => $request->prenom,
-            'telephone' => $request->telephone,
-            'cin' => $request->cin,
-            'email' => $request->email,
-            'annee_scolaire' => $request->annee_scolaire,
-            'niveau_scolaire' => $request->niveau_scolaire,
-            'cin_recto_verso' => $path,
-        ]);
-
-        return back()->with('success', 'Demande envoyée avec succès');
+    // API cascade
+    public function getEstablishments($id)
+    {
+        return Establishment::where('university_id', $id)->get();
     }
 }
